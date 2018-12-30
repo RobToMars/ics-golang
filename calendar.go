@@ -13,6 +13,7 @@ type Calendar struct {
 	url               string
 	version           float64
 	timezone          time.Location
+	modified          time.Time
 	events            Events
 	eventsByDate      map[string][]*Event
 	eventByID         map[string]*Event
@@ -67,6 +68,15 @@ func (c *Calendar) SetVersion(ver float64) *Calendar {
 
 func (c *Calendar) GetVersion() float64 {
 	return c.version
+}
+
+func (c *Calendar) SetLastModified(modified time.Time) *Calendar {
+	c.modified = modified
+	return c
+}
+
+func (c *Calendar) GetLastModified() time.Time {
+	return c.modified
 }
 
 func (c *Calendar) SetTimezone(tz time.Location) *Calendar {

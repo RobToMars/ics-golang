@@ -199,6 +199,7 @@ func (p *Parser) parseICalContent(iCalContent, url string) {
 	ical.SetName(p.parseICalName(calInfo))
 	ical.SetDesc(p.parseICalDesc(calInfo))
 	ical.SetVersion(p.parseICalVersion(calInfo))
+	ical.SetLastModified(p.parseICalLastModified(calInfo))
 	ical.SetTimezone(p.parseICalTimezone(calInfo))
 	ical.SetUrl(url)
 
@@ -236,6 +237,16 @@ func (p *Parser) parseICalVersion(iCalContent string) float64 {
 	// parse the version result to float
 	ver, _ := strconv.ParseFloat(trimField(result, "VERSION:"), 64)
 	return ver
+}
+
+// parses the iCal last modified
+func (p *Parser) parseICalLastModified(iCalContent string) time.Time {
+
+	re, _ := regexp.Compile(`LAST-MODIFIED:.*?\n`)
+	result := re.FindString(iCalContent)
+	modified := trimField(result, "LAST-MODIFIED:")
+	t, _ := time.Parse(IcsFormat, modified)
+	return t
 }
 
 // parses the iCal timezone

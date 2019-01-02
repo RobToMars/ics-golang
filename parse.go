@@ -246,10 +246,6 @@ func (p *Parser) parseICalLastModified(iCalContent string) time.Time {
 	re, _ := regexp.Compile(`LAST-MODIFIED:.*?\n`)
 	result := re.FindString(iCalContent)
 	modified := trimField(result, "LAST-MODIFIED:")
-
-	if !strings.Contains(modified, "Z") {
-		modified = fmt.Sprintf("%sZ", modified)
-	}
 	return parseDateTime(modified)
 }
 
@@ -498,10 +494,6 @@ func (p *Parser) parseEventCreated(eventData string) time.Time {
 	re, _ := regexp.Compile(`CREATED:.*?\n`)
 	result := re.FindString(eventData)
 	created := trimField(result, "CREATED:")
-
-	if !strings.Contains(created, "Z") {
-		created = fmt.Sprintf("%sZ", created)
-	}
 	return parseDateTime(created)
 }
 
@@ -510,10 +502,6 @@ func (p *Parser) parseEventModified(eventData string) time.Time {
 	re, _ := regexp.Compile(`LAST-MODIFIED:.*?\n`)
 	result := re.FindString(eventData)
 	modified := trimField(result, "LAST-MODIFIED:")
-
-	if !strings.Contains(modified, "Z") {
-		modified = fmt.Sprintf("%sZ", modified)
-	}
 	return parseDateTime(modified)
 }
 

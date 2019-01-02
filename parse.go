@@ -262,7 +262,7 @@ func (p *Parser) parseICalTimezone(iCalContent string) time.Location {
 	// if fails with the timezone => go Local
 	if err != nil {
 		p.errorsOccured = append(p.errorsOccured, err)
-		loc, _ = time.LoadLocation("UTC")
+		loc = time.Now().Location()
 	}
 	return *loc
 }

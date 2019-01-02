@@ -267,6 +267,17 @@ func (p *Parser) parseICalTimezone(iCalContent string) time.Location {
 	return *loc
 }
 
+func ParseICalTimezone(tz string) time.Location {
+	// create location instance
+	loc, err := time.LoadLocation(tz)
+
+	// if fails with the timezone => go Local
+	if err != nil {
+		loc = time.Now().Location()
+	}
+	return *loc
+}
+
 // ======================== EVENTS PARSING ===================
 
 // parses the iCal events Data

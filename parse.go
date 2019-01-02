@@ -250,9 +250,7 @@ func (p *Parser) parseICalLastModified(iCalContent string) time.Time {
 	if !strings.Contains(modified, "Z") {
 		modified = fmt.Sprintf("%sZ", modified)
 	}
-
-	t, _ := time.Parse(IcsFormat, modified)
-	return t
+	return parseDateTime(modified)
 }
 
 // parses the iCal timezone
@@ -323,7 +321,7 @@ func (p *Parser) parseEvents(cal *Calendar, eventsData []string) {
 			if untilString == "" {
 				until = nil
 			} else {
-				untilV, _ := time.Parse(IcsFormat, untilString)
+				untilV := parseDateTime(untilString)
 				until = &untilV
 			}
 
@@ -504,10 +502,7 @@ func (p *Parser) parseEventCreated(eventData string) time.Time {
 	if !strings.Contains(created, "Z") {
 		created = fmt.Sprintf("%sZ", created)
 	}
-
-	t, _ := time.Parse(IcsFormat, created)
-
-	return t
+	return parseDateTime(created)
 }
 
 // parses the event modified time
@@ -519,18 +514,21 @@ func (p *Parser) parseEventModified(eventData string) time.Time {
 	if !strings.Contains(modified, "Z") {
 		modified = fmt.Sprintf("%sZ", modified)
 	}
-
-	t, _ := time.Parse(IcsFormat, modified)
-
-	return t
+	return parseDateTime(modified)
 }
 
 func parseDateTime(str string) time.Time {
-	if !strings.Contains(str, "Z") {
-		str = fmt.Sprintf("%sZ", str)
+	format := ""
+	if strings.Contains(str, "T") && strings.Contains(str, "Z") {
+		format = IcsFormatTZ
+
+	} else if strings.Contains(str, "T") {
+		format = IcsFormatT
+	} else {
+		format = IcsFormat
 	}
 
-	t, _ := time.Parse(IcsFormat, str)
+	t, _ := time.Parse(format, str)
 	return t
 }
 
@@ -543,8 +541,7 @@ func (p *Parser) parseEventStart(eventData string) time.Time {
 	if resultWholeDay := reWholeDay.FindString(eventData); resultWholeDay != "" {
 		// whole day event
 		modified := trimField(resultWholeDay, "DTSTART;VALUE=DATE:")
-		t, _ := time.Parse(IcsFormatWholeDay, modified)
-		return t
+		return parseDateTime(modified)
 	}
 	if resultDateTime := reDateTime.FindString(eventData); resultDateTime != "" {
 		// date time event
@@ -566,7 +563,7 @@ func (p *Parser) parseEventEnd(eventData string) time.Time {
 	if resultWholeDay := reWholeDay.FindString(eventData); resultWholeDay != "" {
 		// whole day event
 		modified := trimField(resultWholeDay, "DTEND;VALUE=DATE:")
-		t, _ := time.Parse(IcsFormatWholeDay, modified)
+		t, _ := time.Parse(IcsFormat, modified)
 		return t
 	}
 	if resultDateTime := reDateTime.FindString(eventData); resultDateTime != "" {

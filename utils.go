@@ -33,13 +33,15 @@ var MaxRepeats int
 const uts = "1136239445"
 
 //ics date time format
-const IcsFormat = "20060102T150405Z"
+const IcsFormatTZ = "20060102T150405Z"
+
+const IcsFormatT = "20060102T150405"
+
+// ics date format ( describes a whole day)
+const IcsFormat = "20060102"
 
 // Y-m-d H:i:S time format
 const YmdHis = "2006-01-02 15:04:05"
-
-// ics date format ( describes a whole day)
-const IcsFormatWholeDay = "20060102"
 
 // downloads the calendar before parsing it
 func downloadFromUrl(url string) (string, error) {

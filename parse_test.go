@@ -265,7 +265,7 @@ func TestCalendarInfo(t *testing.T) {
 		t.Errorf("Expected %d events by date in calendar, got %d events", 2, len(eventsByDates))
 	}
 
-	geometryExamIcsFormat, errICS := time.Parse(IcsFormat, "20140616T060000Z")
+	geometryExamIcsFormat, errICS := time.Parse(IcsFormatTZ, "20140616T060000Z")
 	if err != nil {
 		t.Errorf("(ics time format) Unexpected error %s", errICS)
 	}
@@ -325,10 +325,10 @@ func TestCalendarEvents(t *testing.T) {
 	}
 
 	//  event must have
-	start, _ := time.Parse(IcsFormat, "20140714T100000Z")
-	end, _ := time.Parse(IcsFormat, "20140714T110000Z")
-	created, _ := time.Parse(IcsFormat, "20140515T075711Z")
-	modified, _ := time.Parse(IcsFormat, "20141125T074253Z")
+	start, _ := time.Parse(IcsFormatTZ, "20140714T100000Z")
+	end, _ := time.Parse(IcsFormatTZ, "20140714T110000Z")
+	created, _ := time.Parse(IcsFormatTZ, "20140515T075711Z")
+	modified, _ := time.Parse(IcsFormatTZ, "20141125T074253Z")
 	location := "In The Office"
 	geo := NewGeo("39.620511", "-75.852557")
 	desc := "1. Report on previous weekly tasks. \\n2. Plan of the present weekly tasks."

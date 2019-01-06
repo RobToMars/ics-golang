@@ -187,6 +187,22 @@ func (c *Calendar) GetUpcomingEvents(n int) []Event {
 	return upcomingEvents
 }
 
+// GetUpcomingEvents returns the next n-Events.
+func (c *Calendar) GetEventsFrom(t time.Time) []Event {
+	upcomingEvents := []Event{}
+
+	// sort events of calendar
+	sort.Sort(c.events)
+
+	for _, event := range c.events {
+		if event.GetStart().After(t) || event.GetStart().Equal(t) {
+			upcomingEvents = append(upcomingEvents, event)
+		}
+	}
+
+	return upcomingEvents
+}
+
 func (c *Calendar) String() string {
 	eventsCount := len(c.GetEvents())
 	name := c.GetName()

@@ -8,7 +8,7 @@ Golang ics parser
 * Import the package:
 ```sh
 import (
-	"github.com/PuloV/ics-golang"
+	"github.com/RobToMars/ics-golang"
 )
 ```
 * Create a new parser:
